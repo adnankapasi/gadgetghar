@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gadget Ghar – Links</title>
+<meta name="description" content="Kitchen & home finds from Gadget Ghar">
+<link rel="icon" href="logo.png">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       background:linear-gradient(135deg,#FF8A1F,#F0502A);color:#fff;display:flex;justify-content:center}
+  main{width:100%;max-width:520px;padding:32px 18px 48px;text-align:center}
+  img.logo{width:96px;height:96px;border-radius:50%;border:3px solid #fff}
+  h1{margin:12px 0 4px;font-size:28px}
+  p.sub{margin:0 0 14px;opacity:.95}
+  .disc{background:rgba(255,255,255,.18);border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:18px}
+  input{width:100%;padding:12px 14px;border:0;border-radius:12px;font-size:16px;margin-bottom:8px}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 8px;opacity:.9;text-align:left}
+  a.btn{display:block;background:#fff;color:#222;text-decoration:none;font-weight:600;
+        padding:15px 16px;border-radius:14px;margin:9px 0;box-shadow:0 3px 10px rgba(0,0,0,.12);transition:transform .1s}
+  a.btn:active{transform:scale(.98)}
+  footer{margin-top:28px;font-size:13px;opacity:.9}
+  footer a{color:#fff}
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="logo.png" alt="Gadget Ghar logo">
+  <h1>Gadget Ghar</h1>
+  <p class="sub">Kitchen &amp; home finds · Tap a product to see it on Amazon</p>
+  <div class="disc">#ad · As an Amazon Associate I earn from qualifying purchases. Check the latest price and reviews on Amazon before buying.</div>
+  <input id="q" type="search" placeholder="Search e.g. chopper" aria-label="Search products">
+  <div id="list">Loading…</div>
+  <footer>
+    <a href="https://instagram.com/gadget.ghar5">Instagram</a>
+  </footer>
+</main>
+<script>
+fetch('products.txt?v=' + Date.now()).then(r => r.text()).then(txt => {
+  let tag = '';
+  const groups = {};
+  for (const raw of txt.split('\n')) {
+    const line = raw.trim();
+    if (!line || line.startsWith('#')) continue;
+    const m = line.match(/^TAG\s*=\s*(\S+)/i);
+    if (m) { tag = m[1]; continue; }
+    const [section, name, asin] = line.split('|').map(s => (s || '').trim());
+    if (!section || !name || !/^[A-Z0-9]{10}$/i.test(asin)) continue;
+    (groups[section] ||= []).push({ name, asin });
+  }
+  const list = document.getElementById('list');
+  list.textContent = '';
+  for (const [section, items] of Object.entries(groups)) {
+    const h = document.createElement('h2'); h.textContent = section; list.appendChild(h);
+    for (const it of items) {
+      const a = document.createElement('a');
+      a.className = 'btn';
+      a.textContent = it.name;
+      a.href = 'https://www.amazon.in/dp/' + it.asin + (tag ? '?tag=' + encodeURIComponent(tag) : '');
+      a.target = '_blank';
+      a.rel = 'nofollow sponsored noopener';
+      list.appendChild(a);
+    }
+  }
+  document.getElementById('q').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    list.querySelectorAll('a.btn').forEach(a => a.style.display = a.textContent.toLowerCase().includes(q) ? '' : 'none');
+    list.querySelectorAll('h2').forEach(h => {
+      let n = h.nextElementSibling, any = false;
+      while (n && n.tagName === 'A') { if (n.style.display !== 'none') any = true; n = n.nextElementSibling; }
+      h.style.display = any ? '' : 'none';
+    });
+  });
+}).catch(() => { document.getElementById('list').textContent = 'Could not load products.'; });
+</script>
+</body>
+</html>

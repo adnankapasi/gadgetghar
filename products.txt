@@ -1,0 +1,19 @@
+# ===== Gadget Ghar links page =====
+# 1) Put your Amazon Associates tag on the TAG line below (find it in Associates Central, e.g. gadgetghar-21)
+# 2) Add products as:   Section | Emoji Name | ASIN
+#    The ASIN is the code after /dp/ in an Amazon link, e.g. amazon.in/dp/B0C897PVVM
+# 3) Lines starting with # are ignored. Newest products: put them at the top of their section.
+
+TAG = ezyera578-21
+
+Kitchen | 🧅 Electric Chopper | B0C897PVVM
+Kitchen | 🧅 Pull Chopper | B01LWYDEQ7
+Kitchen | 🔥 Electric Gas Lighter | B0F4G3JQXZ
+Kitchen | 🫒 Oil Sprayer | B0DH4WS3B4
+Kitchen | ⚖️ Kitchen Scale | B083C6XMKQ
+Home | 🧊 Fridge Storage Boxes | B0DK527F5V
+Home | 📐 Anti-Slip Shelf Liner | B09VC32SHV
+Desk | 💻 Laptop Stand | B07XCM6T4N
+Travel | 🧳 Packing Cubes | B0F8B8Z1RL
+Travel | 👟 Shoe Bag | B0BK1457X3
+Travel | 😴 Neck Pillow | B082F88NKP
